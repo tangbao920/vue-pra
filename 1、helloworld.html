@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="msg"/>
+    <div v-text="msg"></div>
+    <div v-once>
+        {{msg}}
+    </div>
+    <div v-html="p"></div>
+</div>
+<script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm=new Vue({
+       el:'#app',//告诉vue能管理哪个部分，querySelector
+       data:{//data中的数据会被vm所代理
+           msg:'hello',
+           p:'<p>hello</p>'
+       }
+    });//Object.defineProperty
+
+</script>
+</body>
+</html>
