@@ -28,14 +28,15 @@
                       <!--:和v-bind等价，指令：动态绑定数据-->
                       <!--.number是让输入框的值变为数字类型-->
                       <!--.lazy双向数据绑定不是实时更新，而是失去焦点后再更新-->
+                      <!--过滤器 原数据不变的情况下，改变数据的显示-->
                       <tr v-for="(product,index) in products">
                           <td><input type="checkbox" v-model="product.isSelected"/></td>
                           <td><img :src="product.productCover" :title="product.productName"/>{{product.productInfo}}</td>
                           <td>{{product.productPrice}}</td>
                           <td><input type="number" v-model.number.lazy="product.productCount"/></td>
-                          <td>{{product.productPrice*product.productCount}}</td>
+                          <td>{{product.productPrice*product.productCount | myTofixed(2)}}</td>
                           <td>
-                              <button type="button" class="btn btn-danger">删除</button>
+                              <button type="button" class="btn btn-danger" @click="remove(product)">删除</button>
                           </td>
                       </tr>
                   </thead>
@@ -53,15 +54,25 @@
                 products:[]
             },
             methods:{
-               getData:function () {
-                   axios.get('./test.json').then((res) => {
-                       if (res.status == 200) {
-                           this.products = res.data;
-                       }
-                   }, (error) => {
-                       console.log(error);
-                   });
-               } 
+                getData: function () {
+                    axios.get('./test.json').then((res) => {
+                        if (res.status == 200) {
+                            this.products = res.data;
+                        }
+                    }, (error) => {
+                        console.log(error);
+                    });
+                },
+                remove: function (p) {
+                    this.products=this.products.filter(item=>item!==p);//这里可以不传入索引，用splice删除。也可以传入这一项，通过filter过滤。传入的product是引用地址，用===可以比较。
+                }
+            },
+            filters:{//存放自定义的过滤器
+                myTofixed:function (input,param1) {//过滤器前面是什么，第一个参数就是什么。过滤器传参，依次为第二个 第三个……
+                    //return 100; 返回值是什么，页面就显示什么
+                    return '$'+input.toFixed(param1);//通过传参控制保留2位小数
+                }
+
             }
         });
     </script>
