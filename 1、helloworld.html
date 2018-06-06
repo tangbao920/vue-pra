@@ -7,6 +7,7 @@
 <body>
 <div id="app">
     <input type="text" v-model="msg"/>
+    {{arr}}
     <div v-text="msg"></div>
     <div v-once>
         {{msg}}
@@ -14,15 +15,19 @@
     <div v-html="p"></div>
 </div>
 <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+<!--基于promise的-->
+<script type="text/javascript" src="./node_modules/axios/dist/axios.js"></script>
 <script>
     let vm=new Vue({
        el:'#app',//告诉vue能管理哪个部分，querySelector
        data:{//data中的数据会被vm所代理
-           msg:'hello',
-           p:'<p>hello</p>'
+           arr:[1,2,3,5]
        }
     });//Object.defineProperty
-
+    //vm.arr.reverse();
+    //vm.arr.push(2,4,5);
+    vm.arr=vm.arr.map(item=>item*3);
+    vm.arr=vm.arr.filter(item=>item>3);
 </script>
 </body>
 </html>
