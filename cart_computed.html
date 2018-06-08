@@ -18,7 +18,7 @@
                   <caption class="h2 text-warning text-center">购物车</caption>
                   <thead>
                       <tr>
-                          <th>全选 <input type="checkbox" v-model="checkAll" @change="change"/></th>
+                          <th>全选 <input type="checkbox" v-model="checkAll"/></th>
                           <th>商品</th>
                           <th>单价</th>
                           <th>数量</th>
@@ -32,7 +32,7 @@
                   <!--.lazy双向数据绑定不是实时更新，而是失去焦点后再更新-->
                   <!--过滤器 原数据不变的情况下，改变数据的显示-->
                   <tr v-for="(product,index) in products">
-                      <td><input type="checkbox" v-model="product.isSelected" @change="checkOnly()"/></td>
+                      <td><input type="checkbox" v-model="product.isSelected"/></td>
                       <td><img :src="product.productCover" :title="product.productName"/>{{product.productInfo}}</td>
                       <td>{{product.productPrice}}</td>
                       <td><input type="number" v-model.number.lazy="product.productCount" min="0"/></td>
@@ -43,7 +43,7 @@
                   </tr>
                   <tr>
                       <!--sum()数据一有变化就会重新调用这个函数，算出最新的结果，不会缓存上一次的结果，用结算属性可以解决-->
-                      <td colspan="6" align="right">总价：{{sum()| myTofixed(2)}}</td>
+                      <td colspan="6" align="right">总价：{{sum| myTofixed(2)}}</td>
                   </tr>
                   </tbody>
                </table>
@@ -57,15 +57,14 @@
                 this.getData();
             },
             data:{
-                products:[],
-                checkAll:false
+                products:[]
+                /*checkAll:false*/
             },
             methods:{
                 getData: function () {
                     axios.get('./test.json').then((res) => {
                         if (res.status == 200) {
                             this.products = res.data;
-                            this.checkOnly();//获取到products后，就检查有没有没有选中的，如果有false的情况，checkAll就设置为false
                         }
                     }, (error) => {
                         console.log(error);
@@ -83,14 +82,6 @@
                    }*/
                   //这里不通过传参当前checkbox的选中与否也可以
                     this.checkAll=this.products.every(item=>item.isSelected);
-                },
-                sum:function () {
-                   return this.products.reduce((prev,curr)=>{
-                       if(!curr.isSelected){
-                           return prev;
-                       }
-                       return prev+curr.productPrice*curr.productCount;
-                    },0);
                 }
             },
             filters:{//存放自定义的过滤器
@@ -99,6 +90,34 @@
                     return '$'+input.toFixed(param1);//通过传参控制保留2位小数
                 }
 
+            },
+            computed:{
+                //get和set中的this指向vm
+                /*checkAll(){
+
+                }*/
+                checkAll:{
+                    get(){
+                        //当products的值变化时会重新计算
+                        return this.products.every(p=>p.isSelected);
+                    },
+                    set(val){
+                        this.products.forEach(p=>p.isSelected=val);
+                    }
+                },
+                sum:{
+                    get(){
+                        return this.products.reduce((prev,curr)=>{
+                            if(!curr.isSelected){
+                                return prev;
+                            }
+                            return prev+curr.productPrice*curr.productCount;
+                        },0);
+                    },
+                    set(){
+
+                    }
+                }
             }
         });
     </script>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件修饰符</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+    <style>
+        div{
+            background:blueviolet;
+        }
+    </style>
+</head>
+<body>
+   <div id="app">
+      <div @click="parent" style="width:300px;height:300px;">parent
+          <div @click.capture="child" style="width:200px;height:200px;">child
+              <div @click="grandson" style="width:100px;height:100px;">grandson</div>
+          </div>
+      </div>
+   </div>
+   <script>
+       let vm=new Vue({
+          el:'#app',
+          data:{
+
+          },
+          methods:{
+              parent(){
+                alert('parent');
+              },
+              child(){
+                alert('child');
+              },
+              grandson(){
+                alert('grandson');
+              }
+          }
+       });
+   </script>
+</body>
+</html>

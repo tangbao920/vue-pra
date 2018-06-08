@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<!--<div id="app1">{{'hello' | format}}</div>
+<div id="app2">{{'你好' | format}}</div>-->
+<div id="app">
+    <button @click="show">点击我</button>
+    <input type="text" v-model="s"/>
+    {{message}}
+</div>
+<script>
+    new Vue({
+       el:'#app',
+       data:{
+         s:''
+       },
+       methods:{
+         show(){
+             this.s=this.s;
+             console.log(1);
+         }
+       },
+       computed:{
+             message:function () {
+                 console.log(2);
+                 return this.s+"wanglimei";
+             }
+       }
+    });
+    /*Vue.filter("format",(data)=>{
+       return "wanglimei"+data;
+    });
+    new Vue({
+       el:"#app1"
+    });
+    new Vue({
+       el:"#app2"
+    });*/
+</script>
+</body>
+</html>
