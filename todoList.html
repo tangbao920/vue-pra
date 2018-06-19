@@ -22,11 +22,14 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-warning">
-                    <div class="panel-heading"><h3 class="text-danger">亲~☺您还有 x 件事需要完成</h3></div>
+                    <div class="panel-heading">
+                        <h3 class="text-danger">亲~☺您还有 {{sum()}} 件事需要完成</h3>
+                        <input type="text" class="form-control" v-model="title" placeholder="请填写内容" @keyUp.enter="add"/>
+                    </div>
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <input type="checkbox"/>睡觉<button class="pull-right btn btn-danger btn-xs">&times;</button>
+                            <li class="list-group-item" v-for="(todo,index) in todos">
+                                <input type="checkbox" v-model="todo.isSelected"/>{{todo.title}}<button class="pull-right btn btn-danger btn-xs" @click="remove(todo)">&times;</button>
                             </li>
                         </ul>
                     </div>
@@ -42,10 +45,6 @@
         </div>
     </div>
 </div>
-<script>
-    let vm=new Vue({
-       el:'#app'
-    });
-</script>
+<script type="text/javascript" src="todo.js"></script>
 </body>
 </html>
