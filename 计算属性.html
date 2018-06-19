@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>练习计算属性</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        全选：<input type="checkbox" v-model="checkAll"/><br/>
+        <label v-for="product in products">
+            <input type="checkbox" v-model="product.isSelected"/>{{product.name}}
+        </label>
+        <input type="text" v-model="a"/>
+    </div>
+    <script>
+        let vm=new Vue({
+           el:"#app",
+           data:{
+               products:[
+                   {
+                       isSelected:true,
+                       name:"香蕉"
+                   },
+                   {
+                       isSelected:false,
+                       name:"苹果"
+                   },
+                   {
+                       isSelected:true,
+                       name:"橘子"
+                   }
+               ],
+               a:''
+           },
+           watch:{
+              a:function (newVal,oldVal) {//只有值变化的时候，才会触发，名字和观察的数据一致。支持异步逻辑。因为不需要return
+                   setTimeout(()=>{
+                       if(newVal.length>2){
+                           this.msg="";//异步的情况用watch，其他情况更多的用computed
+                       }
+                   },500);
+              }  
+           }, 
+           computed:{
+               checkAll:{
+                   get(){
+                       return this.products.every(item=>{
+                           return item.isSelected;
+                       });
+                   },
+                   set(val){
+                       this.products.forEach(item=>item.isSelected=val);
+                   }     xcx'c'c'c
+               }
+           }
+        });
+    </script>
+</body>
+</html>
