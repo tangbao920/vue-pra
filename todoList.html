@@ -6,6 +6,12 @@
     <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
     <script type="text/javascript" src="./node_modules/axios/dist/axios.js"></script>
     <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <style>
+        .del{
+            text-decoration:line-through;
+            color: #cccccc;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
@@ -23,13 +29,18 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="text-danger">亲~☺您还有 {{sum()}} 件事需要完成</h3>
+                        <h3 class="text-danger">亲~☺您还有 {{sum}} 件事需要完成</h3>
                         <input type="text" class="form-control" v-model="title" placeholder="请填写内容" @keyUp.enter="add"/>
                     </div>
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="(todo,index) in todos">
-                                <input type="checkbox" v-model="todo.isSelected"/>{{todo.title}}<button class="pull-right btn btn-danger btn-xs" @click="remove(todo)">&times;</button>
+                            <li class="list-group-item" v-for="(todo,index) in todos" @dblclick="remember(todo)">
+                                <!--如果点击的todo和当前循环的某一个相等的时候，应该显示输入框-->
+                                <span :class="{del:todo.isSelected}" v-show="cur!=todo">
+                                    <input type="checkbox" v-model="todo.isSelected"/>{{todo.title}}
+                                </span>
+                                <input type="text"  v-model="todo.title" v-show="cur==todo" @keyup.enter="cancel" @keyup.27="esc(todo)" v-focus="cur==todo"/>
+                                <button class="pull-right btn btn-danger btn-xs" @click="remove(todo)">&times;</button>
                             </li>
                         </ul>
                     </div>

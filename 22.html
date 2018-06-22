@@ -3,14 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
 </head>
 <body>
+<div id="app">
+    <button @click="modify">改变数组</button>
+</div>
 <script>
-    var foo = 'hello';
-    (function() {
-        var foo= foo || 'world';
-        console.log(foo);
-    })();
+    let vm=new Vue({
+       el:"#app",
+       data:{
+           list:{
+               name:'wanglimei'
+           }
+       },
+       watch:{
+          list:{
+              handler(newVal,oldVal){
+                  alert("改变了");
+              },
+              deep:true
+          }
+       },
+       methods:{
+           modify:function () {
+               this.list.name="22";
+           }
+       } 
+    });
 </script>
 </body>
 </html>
