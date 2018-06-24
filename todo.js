@@ -17,7 +17,8 @@ let vm=new Vue({
         ],
         title:'',
         cur:'',
-        escstr:''
+        escstr:'',
+        hash:''
     },
     methods:{
         add:function () {
@@ -53,6 +54,12 @@ let vm=new Vue({
                 }
             },0);
             //return this.todos.filter(item=>item.isSelected==true).length;
+        },
+        filterTodos:function () {
+           if(this.hash=="all") return this.todos;
+           if(this.hash=="finish") return this.todos.filter(item=>item.isSelected);
+           if(this.hash=="unfinish") return this.todos.filter(item=>!item.isSelected);
+           return this.todos;//hash值不满足上述条件的话，返回全部
         }
     },
     directives:{
@@ -67,6 +74,15 @@ let vm=new Vue({
     },
     created:function(){//初始化数据
        this.todos=JSON.parse(localStorage.getItem('data'))||this.todos;
+       //监控哈希值的变化
+        this.hash=window.location.hash.slice(2) ||"all";
+        window.addEventListener("hashchange",()=>{
+           //console.log(this);//箭头函数里的this是vue
+            this.hash=window.location.hash.slice(2) ||"all";
+        },false);
+        /*window.addEventListener("hashchange",function () {
+            console.log(this);//回调函数里的this是window
+        },false);*/
     },
     watch:{
         /*todos:function () {//不能监控数组内部成员的变化，因为对于vue来说，newVal和oldVal地址没有发生改变
