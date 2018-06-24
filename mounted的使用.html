@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mounted的使用</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p ref="test">{{msg}}哈哈哈</p>
+    <p ref="test">{{msg}}嘻嘻嘻</p>
+    <ul ref="wrap">
+        <li v-for="a in list" ref="myli">{{a}}</li>
+    </ul>
+
+</div>
+<script>
+    let vm=new Vue({
+      el:"#app",
+      data:{
+         msg:"hello",
+          list:[1,2,3,4]
+      },
+      mounted(){
+         //可以操作dom
+         this.$nextTick(()=>{//异步的方法，等待渲染dom完成后来获取vm
+             console.log(vm);
+         });
+         //如果dom元素不是通过v-for循环处理的，ref具有相同属性值的元素有多个，但是只能获取一个(获取到最后一个)
+          console.log(this.$refs.test);
+          console.log(this.$refs.myli);//通过v-for循环出来的，可以获取一个数组。例如[li,li,li,li]
+          this.list.push(5);
+          this.$nextTick(()=>{//dom的渲染是异步的，更新数据后想要马上得到真实的渲染后view，可以使用$nextTick()这个异步方法。
+              console.log(this.$refs.wrap.children);
+          });
+      }
+    });
+</script>
+</body>
+</html>
