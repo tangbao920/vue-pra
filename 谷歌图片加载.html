@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>谷歌图片加载</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+   <div id="app">
+      <div style="width:800px;height:800px;" v-for="(a,index) in list" v-img="a.url"></div>
+   </div>
+   <script>
+       let vm=new Vue({
+           el:'#app',
+           data:{
+               list:[
+                   {
+                       url:"http://img.zcool.cn/community/0117e2571b8b246ac72538120dd8a4.jpg@1280w_1l_2o_100sh.jpg"
+                   },
+                   {
+                       url:"http://img.zcool.cn/community/0166e959ac1386a801211d25c63563.jpg@1280w_1l_2o_100sh.jpg"
+                   },
+                   {
+                       url:"http://img.zcool.cn/community/01e44d5711c84f6ac72513437994cb.jpg@2o.jpg"
+                   }
+               ]
+           },
+           directives:{
+              img:function (el,binding) {
+                  var color=Math.floor(Math.random()*1000000);
+                  el.style.backgroundColor="#"+color;
+                  var img=new Image();
+                  img.src=binding.value;
+                  img.onload=function () {
+                     el.style.backgroundImage='url('+binding.value+')';
+                  }
+              } 
+           }
+       });
+   </script>
+</body>
+</html>
