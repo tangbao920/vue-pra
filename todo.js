@@ -21,9 +21,12 @@ let vm=new Vue({
         hash:''
     },
     methods:{
-        add:function () {
+       /* add:function () {
            this.todos.push({isSelected:true,title:this.title});
            this.title='';
+        },*/
+        add:()=>{
+           console.log(this);
         },
         remove:function (val) {
            this.todos=this.todos.filter(item=>item!==val);

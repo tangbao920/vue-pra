@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ref的作用</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--这里放的所有内容都属于父级当前模板的，只有属性名是属于组件的-->
+    <modal :m="1"><span slot="content">确认删除吗？</span><h1 slot="title">提示</h1><p>测试</p><p>删除啊</p></modal>
+</div>
+<script>
+    let modal={
+        template:`<div>
+                     <slot name="title"></slot>
+                     <slot name="content"></slot>
+                     <slot name="default"></slot>
+                  </div>`
+    }
+    let vm=new Vue({
+       el:"#app",
+       components:{
+          modal
+       }
+    });
+</script>
+</body>
+</html>

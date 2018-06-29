@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件的传值</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    父亲:{{money}}
+    <child :m="money" @child-msg="things"></child>
+</div>
+<script>
+    let child= {
+        //取出属性的值,会在当前子组件上声明一个m属性，值是父亲传过来的
+        //props:['m'],
+        props:{
+            m:{
+                type:[String,Boolean,Function,Object,Array,Number],
+                default:10000,
+                require:true,  //必填
+                validator(val){//第一个参数是当前传递的值，返回true表示校验通过返回false就是不通过
+                   return val>=200
+                }
+            }
+        },
+        template:"<div>儿子：{{m}} <button @click='getMoney(800)'>多要钱</button></div>",
+        methods:{
+            getMoney(val){
+                this.$emit('child-msg',val);
+            }
+        }
+        //如果想用money来替换m的话，可以用计算属性
+        //template:"<div>儿子：{{money}}</div>"
+    }
+    let vm=new Vue({
+       el:"#app",
+       data:{
+           money:200
+       },
+       components:{
+           child
+       },
+       methods:{
+          things(val){//子组件要触发这个函数，并且传递参数val
+              console.log(this);
+              this.money=val;
+          },
+          test:()=>{
+              console.log(this);
+          }
+       }
+    });
+</script>
+</body>
+</html>
