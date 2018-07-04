@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础路由</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <style>
+        .active{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--router-view是一个全局组件，可以直接使用-->
+    <router-view></router-view>
+    <!--a标签的哈希模式-->
+    <!--<a href="#/home">主页</a>
+    <a href="#/list">列表页</a>-->
+    <!--加to属性，通过history.pushState的方式，不能在浏览器的地址栏中回车，回车404-->
+    <!--不加mode:history，默认为hash模式，地址栏中带#-->
+    <router-link to="/home" tag="button">首页</router-link>
+    <router-link to="/list" tag="button">列表页</router-link>
+
+</div>
+<script>
+    let home={template:'<div>首页</div>'};
+    let list={template:'<div>列表页</div>'};
+    let routes=[//路由的映射表 配置路径和组件的关系
+        {path:'/home',component:home},
+        {path:'/list',component:list}
+    ];
+    let router=new VueRouter({
+        routes:routes,
+        mode:'history',//h5模式
+        linkActiveClass:'active'//更改默认的active类名
+    });
+    let vm=new Vue({
+       el:"#app",
+       router
+    });
+</script>
+</body>
+</html>

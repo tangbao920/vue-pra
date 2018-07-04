@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>带参数的路由</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="./node_modules/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <router-link to="/article/1">商品1</router-link>
+    <router-link to="/article/2">商品2</router-link>
+    <router-view></router-view>
+</div>
+<script>
+    //#/article/2
+    // 例如：/article/:c 与/article/1匹配，那么c就等于1。可以用$route.params.c来取得参数c的值
+    let article={
+        template:'<div>第{{$route.params.c}}篇文章</div>',
+        watch:{
+            $route(){
+                alert("发送ajax");
+            }
+        }
+    };
+    /*路径参数的特点：冒号表示值必须要有但是值是随机的*/
+    let routes=[
+        {
+            path:'/article/:c',
+            component:article
+        }
+    ];
+    let router=new VueRouter({
+        routes
+    });
+    let vm=new Vue({
+       el:"#app",
+       router
+    });
+</script>
+</body>
+</html>

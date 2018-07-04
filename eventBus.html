@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eventBus</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+   <brother1></brother1>
+   <brother2></brother2>
+</div>
+<script>
+    /*声明两个组件，实现数据交换。这两个组件无直接关系*/
+    var bus = new Vue();
+    let brother1={
+       template:'<div>{{color}}<button>变绿</button></div>',
+       data(){
+           return {color:'绿色',old:'绿色'}
+       },
+       created(){
+           //编程式的绑定事件
+           bus.$on('changeRed',(val)=>{//回调函数中的this是window,所以这里用箭头函数
+               alert(val);
+               //this.color=val;//页面一加载就执行
+           });
+       }
+    };
+    let brother2={
+        template:'<div>{{color}}<button @click="change">变红</button></div>',
+        data(){
+            return {color:'红色',old:'红色'}
+        },
+        methods:{
+           change(){
+               alert(2323);
+               bus.$emit('changeRed',this.old); //发布
+           }
+        }
+    };
+    let vm=new Vue({
+       el:"#app",
+       data:{
+
+       },
+       components:{
+          brother1,
+          brother2
+       }
+    });
+</script>
+</body>
+</html>

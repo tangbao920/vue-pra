@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>异步渲染dom</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <child ref="child"></child>
+</div>
+<script>
+    /*先调用子组件的mounted方法，再调用父亲的mounted方法。其中mounted的方法调用是异步的。调用完子组件的mounted的方法后，不会等待dom渲染完成，就去调用父亲的mounted方法*/
+    let child={
+       template:"<ul><li v-for='a in arr'>{{a}}</li></ul>",
+       mounted(){
+          this.arr=[4,5,6];
+       },
+       data(){
+          return{
+              arr:[1,2,3]
+          }
+       }
+    };
+    let vm=new Vue({
+       el:"#app",
+       mounted(){
+           this.$nextTick(()=>{
+               console.log(this.$refs.child.$el.innerHTML);//<li>4</li><li>5</li><li>6</li>
+           });
+           console.log(this.$refs.child.$el.innerHTML);//<li>1</li><li>2</li><li>3</li>
+       },
+       components:{
+           child
+       }
+    });
+</script>
+</body>
+</html>

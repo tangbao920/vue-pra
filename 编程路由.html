@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编程路由</title>
+    <script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="./node_modules/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <router-link :to="{path:'/home'}">首页</router-link>
+    <router-link :to="{path:'/list'}">列表页</router-link>
+    <router-view></router-view>
+</div>
+<script>
+    let home={
+        template:"<div>首页<button @click='toList'>去列表</button></div>",
+        methods:{
+            toList(){
+                this.$router.push('/list'); //push方法中传入跳转的路径,强制跳转
+            }
+        }
+    };
+    let list={
+        template:"<div>列表<button @click='toBack'>返回</button></div>",
+        methods:{
+            toBack(){
+                //this.$router.push('/home');
+                this.$router.go(-1);//返回上一级页面
+            }
+        }
+    };
+    let routes=[
+        {
+            path:'',
+            component:home  //默认展示的路由
+        },
+        {
+            path:'/home',
+            component:home
+        },
+        {
+            path:'/list',
+            component:list
+        },
+        {
+            path:'*',
+            redirect:'/home'  //路径变，组件也要切换，404的时候
+        }
+    ];
+    let router=new VueRouter({
+        routes
+    });
+    let vm=new Vue({
+        el:"#app",
+        router    //每个组件都会有一个名为$router(存放的是方法)和名为$route(存放属性)的属性
+    });
+</script>
+</body>
+</html>
